@@ -19,16 +19,15 @@ def home(request):
             if user and user.is_admin==False:
                 login(request, user)
                 valuenext= request.POST.get('next')
-                print('asdassssssssaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', user.role , user.is_admin)
                 op = user.role
                 lk = str(op)
                 # messages.success(request, f'You have been succesfully logged in!')
-                if lk == "tyh":
-                    print('asdassssssssaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', valuenext, user.is_admin)
+                if lk == "Assistant Director":
                     if valuenext:
+                        print("sdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf")
                         return redirect(valuenext)
                     else:
-                        return redirect('ad_create_account')
+                        return redirect('ad_home_page') 
 
                 # elif user.title == 'HR Officer' and user.is_admin==False:
                 #     if valuenext:
@@ -57,6 +56,8 @@ def home(request):
                 #         return redirect('project-engineer-home')
         else:
             messages.warning(request, f'The Login Credentials you entered are not correct!')
+            return render(request, 'authentication/index.html')
+
     else:
 
     # messages.info(request, f'Welcome! You have to login to access further pages!')
