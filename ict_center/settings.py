@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'authentication',
     'assistant_director',
     'team_leader',
+    'experts'
 ]
 
 

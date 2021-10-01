@@ -1,0 +1,94 @@
+{% extends "base/index.html" %} 
+{% load static %}
+{% load crispy_forms_filters %} 
+
+
+
+
+
+  
+{% block content %}
+
+<div class="page-inner">
+  <div class="page-header"></div>
+  <div class="row col-md-12">
+    <div class="col-md-6">
+      <div class="card ">
+        <div class="card-header">
+          <div class="card-title">
+            Register or Create account for new users here!
+          </div>
+        </div>
+        <div class="card-body">
+          <form method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+
+            <!-- {% for field in registrationForm %}
+
+            {{ field.label_tag }}
+            {{ field }}
+
+            {% if field.help_text %}
+
+                {{ field.help_text }}
+            {% endif %}
+
+            {% for error in field.errors %}
+                  {{  field.error  }}
+            {% endfor %}
+
+          {% endfor %} -->
+
+            {{form|crispy}}
+            <!-- {% crispy form %} -->
+
+            <input
+              type="submit"
+              class="mr-auto btn btn-outline-success"
+              name="submit"
+              value="Create Account"
+            />
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="col grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Users in the Sytems</h4>
+            </p>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Team</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for list in lists %}
+                  <tr>
+                    <td>{{ list.firstName }}</td>
+                    <td>{{ list.role }}</td>
+                
+                    <td>
+                     {{ list.team }}
+                    </td>
+                  </tr>
+                  {% endfor %}
+               
+              
+               
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

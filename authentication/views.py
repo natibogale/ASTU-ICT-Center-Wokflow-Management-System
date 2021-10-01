@@ -29,11 +29,11 @@ def home(request):
                     else:
                         return redirect('ad_home_page') 
 
-                # elif user.title == 'HR Officer' and user.is_admin==False:
-                #     if valuenext:
-                #         return redirect(valuenext)
-                #     else:
-                #         return redirect('human-resources-home')
+                elif lk == 'ICT Director':
+                    if valuenext:
+                        return redirect(valuenext)
+                    else:
+                        return redirect('dr_home_page')
                 # elif user.title == 'Record Officer' and user.is_admin==False:
                 #     if valuenext:
                 #         return redirect(valuenext)
