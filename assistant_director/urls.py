@@ -6,4 +6,6 @@ urlpatterns = [
     path('', index, name="ad_home_page" ),
     path('register/', registrationView, name="ad_create_account"),
     path('profile/', profile, name="ad_profile"),
+    path('manage-profile/', manageUsersView, name="ad_manage_accounts"),
+
 ]

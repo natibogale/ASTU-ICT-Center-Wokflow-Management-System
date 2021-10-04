@@ -12,24 +12,11 @@ class DateInput(forms.DateInput):
 
 
 class addProjectsForm(forms.ModelForm):
-    # worksContractSigningDate = forms.DateField(widget=DatePickerInput(format='%Y-%m-%d'))
-    # worksContractCommencementDate = forms.DateField(widget=DatePickerInput(format='%Y-%m-%d'))
-    # worksContractCompletionDate_original = forms.DateField(widget=DatePickerInput(format='%Y-%m-%d'))
-    # worksContractCompletionDate_revised = forms.DateField(widget=DatePickerInput(format='%Y-%m-%d'))
-    # servicesContractSigningDate = forms.DateField(widget=DatePickerInput(format='%Y-%m-%d'))
-    # servicesContractCommencementDate = forms.DateField(widget=DatePickerInput(format='%Y-%m-%d'))
-    # servicesContractCompletionDate_original = forms.DateField(widget=DatePickerInput(format='%Y-%m-%d'))
-    # servicesContractCompletionDate_revised=  forms.DateField(widget=DatePickerInput(format='%Y-%m-%d'))
-    # expectedProjectCompletionDate = forms.DateField(widget=DatePickerInput(format='%Y-%m-%d'))
-    # variationOrders_approvalDate = forms.DateField(widget=DatePickerInput(format='%Y-%m-%d'))
-    # extentionOfTime_approvalDate =  forms.DateField(widget=DatePickerInput(format='%Y-%m-%d'))
 
-
-
-    assignedTeam = forms.ChoiceField(choices = [])
-    def __init__(self, *args, **kwargs):
-        super(addProjectsForm, self).__init__(*args, **kwargs)
-        self.fields['assignedTeam'].choices = [(  x.teamName , x.teamName  ) for x in Teams.objects.exclude(teamName  ='All')]
+    assignedTeam = forms.ModelChoiceField(queryset=Teams.objects.exclude(teamName  ='All'))
+    # def __init__(self, *args, **kwargs):
+    #     super(addProjectsForm, self).__init__(*args, **kwargs)
+    #     self.fields['assignedTeam'].choices = [(  x , x.teamName  ) for x in Teams.objects.exclude(teamName  ='All')]
 
         # self.fields['assignedTeam'].choices = [(x) for x in User.objects.filter( username = 'n'  )]
 
@@ -38,13 +25,24 @@ class addProjectsForm(forms.ModelForm):
 
     is_urgent = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect)
   
-
-
     class Meta:
         model = Projects
         # fields = '__all__'
-        exclude = ['dateAdded','is_seen','created_by']
+        exclude = ['dateAdded','is_seen','created_by','is_active','assignedExpert','currentlyOn','expertUnique','teamUnique']
 
         widgets = {
             'deadLine': DateInput(),
         }
+
+
+
+class sendMessagesForm(forms.ModelForm):
+  
+    class Meta:
+        model = TeamProjectMessages
+        fields = ('message','projectMessageFile')
+
+        widgets = {
+            'deadLine': DateInput(),
+        }
+

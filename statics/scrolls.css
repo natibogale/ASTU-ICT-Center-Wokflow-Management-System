@@ -1,0 +1,7 @@
+.scroll-yes{
+    height: 60vh;
+    overflow-y: scroll;
+    position: sticky;
+    background-color: rgb(175, 175, 233);
+    margin-bottom: 180px;
+}

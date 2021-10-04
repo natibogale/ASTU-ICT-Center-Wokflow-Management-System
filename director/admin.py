@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import (Projects,ProjectMessages)
+from .models import (Projects,TeamProjectMessages)
 from django.contrib.auth.admin import UserAdmin
 
 class projects(admin.ModelAdmin):
@@ -27,7 +27,7 @@ class projectMessages(admin.ModelAdmin):
     search_fields = ('id','projectId','messageSender','messageTo',
         'message','sentDate','is_seen')
 
-    readonly_fields = ('sentDate','messageSender')
+    readonly_fields = ('sentDate',)
 
     list_display_links=[
         'projectId',
@@ -42,4 +42,4 @@ class projectMessages(admin.ModelAdmin):
 
 
 admin.site.register(Projects,projects)
-admin.site.register(ProjectMessages,projectMessages)
+admin.site.register(TeamProjectMessages,projectMessages)

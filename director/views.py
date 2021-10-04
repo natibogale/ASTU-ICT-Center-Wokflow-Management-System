@@ -31,11 +31,10 @@ def profile(request):
 @login_required
 def addProjects(request):
     context = {}
-    
     context["data"] = User.objects.get(username = request.user.username)
     rol = request.user.role
     context["role"] = len(str(rol))
-    context["lists"] = Projects.objects.all()
+
     if request.method == 'POST':
         print(request.method)
         form = addProjectsForm(request.POST, request.FILES)
@@ -44,7 +43,7 @@ def addProjects(request):
             project.created_by = request.user
             project.save()
             messages.success(request, f'New Project has been added!')
-            return redirect ('dr_add_projects')
+            return redirect ('dr_manage_projects')
         else:
             form = addProjectsForm(request.POST, request.FILES)
             context["form"] = form
@@ -54,3 +53,15 @@ def addProjects(request):
         context["form"] = form
 
     return render(request, "director/add_projects.html", context)
+
+
+
+@login_required
+def manageProjects(request):
+    context = {}
+    context["data"] = User.objects.get(username = request.user.username)
+    rol = request.user.role
+    context["role"] = len(str(rol))
+    context["lists"] = Projects.objects.filter(is_active=True).order_by('-dateAdded')
+
+    return render(request, "director/manage_projects.html", context)

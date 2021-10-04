@@ -51,7 +51,7 @@ def registrationView(request):
             # login(request,auth)
             messages.success(request, f'The Account is succesfully created user { username } now has access!')
             
-            return redirect('ad_create_account')
+            return redirect('ad_manage_accounts')
         else:
             form = registrationForm(request.POST)
             context ["form"] = form
@@ -74,3 +74,16 @@ def profile(request):
     rol = request.user.role
     context["role"] = len(str(rol))
     return render(request, 'assistant_director/profile.html', context)
+
+
+
+
+@login_required
+def manageUsersView(request):
+    context = {}
+    # context["data"] = User.objects.get(id = id)
+    context["data"] = User.objects.get(username = request.user.username)
+    context["lists"] = User.objects.filter(is_admin = False)
+    return render(request, 'assistant_director/manage_users.html', context)
+
+

@@ -9,14 +9,17 @@
   
 {% block content %}
 
-<div class="page-inner">
-  <div class="page-header"></div>
-  <div class="row col-md-12">
-    <div class="col-md-6">
+<div class="page-inner ">
+  <div class="page-header col-12">
+    <a href="{% url 'ad_manage_accounts' %}"> <button class="btn btn-rounded btn-info  ">Manage Accounts</button>
+    </a>
+  </div>
+  <div class="row col-md-12 ">
+    <div class="col">
       <div class="card ">
         <div class="card-header">
           <div class="card-title">
-            Register or Create account for new users here!
+      Register New User Accounts here!
           </div>
         </div>
         <div class="card-body">
@@ -53,42 +56,14 @@
       </div>
     </div>
 
-    <div class="col-md-6">
-      <div class="col grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title">Users in the Sytems</h4>
-            </p>
-            <div class="table-responsive">
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Role</th>
-                    <th>Team</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for list in lists %}
-                  <tr>
-                    <td>{{ list.firstName }}</td>
-                    <td>{{ list.role }}</td>
-                
-                    <td>
-                     {{ list.team }}
-                    </td>
-                  </tr>
-                  {% endfor %}
-               
-              
-               
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
+
+
+
+
+
+
+
   </div>
 </div>
 {% endblock content %}

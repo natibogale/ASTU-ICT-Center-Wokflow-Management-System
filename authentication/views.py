@@ -34,6 +34,12 @@ def home(request):
                         return redirect(valuenext)
                     else:
                         return redirect('dr_home_page')
+                elif lk == 'Team 1 Leader':
+                    if valuenext:
+                        return redirect(valuenext)
+                    else:
+                        return redirect('tl_home_page')
+
                 # elif user.title == 'Record Officer' and user.is_admin==False:
                 #     if valuenext:
                 #         return redirect(valuenext)

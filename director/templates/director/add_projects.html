@@ -9,10 +9,13 @@
   
 {% block content %}
 
-<div class="page-inner">
-  <div class="page-header"></div>
-  <div class="row col-md-12">
-    <div class="col-md-6">
+<div class="page-inner ">
+  <div class="page-header col-12">
+    <a href="{% url 'dr_manage_projects' %}"> <button class="btn btn-rounded btn-info  ">Manage Current Projects</button>
+    </a>
+  </div>
+  <div class="row col-md-12 ">
+    <div class="col">
       <div class="card ">
         <div class="card-header">
           <div class="card-title">
@@ -54,41 +57,6 @@
     </div>
 
 
-    <div class="col-md-6">
-      <div class="col grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title">Current Projects</h4>
-            </p>
-            <div class="table-responsive">
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th>Title</th>
-                    <th>Dead Line</th>
-                    <th>Assigned Team</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for list in lists %}
-                  <tr>
-                    <td>{{ list.projectTitle }}</td>
-                    <td>{{ list.deadLine }}</td>
-                
-                    <td>
-                     {{ list.assignedTeam }}
-                    </td>
-
-                  </tr>
-                  {% endfor %}
-               
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
 
 

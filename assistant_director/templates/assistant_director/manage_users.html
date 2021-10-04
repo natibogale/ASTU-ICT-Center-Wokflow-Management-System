@@ -1,0 +1,66 @@
+{% extends "base/index.html" %} 
+{% load static %}
+{% load crispy_forms_filters %} 
+
+
+
+
+
+  
+{% block content %}
+
+<div class="page-inner ">
+  <div class="page-header col-12">
+    <a href="{% url 'ad_create_account' %}"> <button class="btn btn-rounded btn-info  ">Create New Accounts</button>
+    </a>
+  </div>
+  <div class="row">
+    <div class="col">
+
+
+    <div class="col">
+      <div class="col grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">User Accounts</h4>
+            </p>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Team</th>
+                    <!-- <th>Urgency</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for list in lists %}
+                  <tr>
+                    <td>{{ list.username }}</td>
+                    <td>{{ list.role }}</td>
+                
+                    <td>
+                     {{ list.team }}
+                    </td>
+           
+                  </tr>
+                  {% endfor %}
+               
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+  </div>
+</div>
+{% endblock content %}

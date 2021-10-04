@@ -15,7 +15,7 @@
 
  */
 
- (function() {
+(function() {
   isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
 
   if (isWindows) {
@@ -164,18 +164,18 @@ md = {
     }
   },
 
-  showNotification: function(from, align, message, type) {
+  showNotification: function(from, align) {
     type = ['', 'info', 'danger', 'success', 'warning', 'rose', 'primary'];
 
     color = Math.floor((Math.random() * 6) + 1);
 
     $.notify({
       icon: "add_alert",
-      message: message
+      message: "Welcome to <b>Material Dashboard Pro</b> - a beautiful admin panel for every web developer."
 
     }, {
       type: type[color],
-      timer: 50,
+      timer: 3000,
       placement: {
         from: from,
         align: align

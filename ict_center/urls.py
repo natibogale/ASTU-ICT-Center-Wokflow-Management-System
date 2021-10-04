@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 from authentication import views
 
 urlpatterns = [
+    # path('jet/', include('jet.urls', 'jet')),
     path('admin/', admin.site.urls),
     path('',include('authentication.urls')),
     path('logout/',views.logoutView, name='logout_page'),

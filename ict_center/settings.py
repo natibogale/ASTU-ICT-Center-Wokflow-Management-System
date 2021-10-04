@@ -167,3 +167,4 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LETTER_EXT = ['.pdf','.doc','.docx','.zip','.rar','.jpg','.jpeg','.rtf','.png','.txt']
