@@ -32,10 +32,17 @@ class Projects(models.Model):
     assignedTeam = models.ForeignKey('authentication.Teams', on_delete=models.CASCADE, max_length=300, verbose_name="Assign Project to")
     assignedExpert = models.ForeignKey('authentication.User', on_delete=models.CASCADE, related_name="+", blank=True, null=True, verbose_name="Assigned Expert")
     projectFile = models.FileField(upload_to='project_documents/',verbose_name="Project File", blank=True, validators=[validate_file])
-    teamUnique = models.UUIDField(default=uuid.uuid1)
+    teamUnique = models.UUIDField(default=uuid.uuid1, unique=True)
     expertUnique = models.UUIDField(blank=True, null=True,unique=True)
     currentlyOn = models.CharField(max_length=500, blank=True, null=True)
     is_active = models.BooleanField(default=True)
+    directorApproved = models.BooleanField(default=False)
+    leaderApproved = models.BooleanField(default=False)
+    directorApprovedDate = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True)
+    leaderApprovedDate = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True)
+    is_late = models.BooleanField(default=False, blank=True,null=True)
+    
+    
 
 
     
@@ -62,10 +69,10 @@ class Projects(models.Model):
 class TeamProjectMessages(models.Model):
     id = models.AutoField(primary_key=True)
     projectId = models.ForeignKey(Projects ,on_delete=models.CASCADE, max_length=500, verbose_name="Project ID")
-    projectUnique = models.CharField(max_length=500, blank=True, null=True)
-    messageSender = models.ForeignKey('authentication.User' ,related_name="+", on_delete=models.CASCADE , max_length=200, verbose_name="Message From")
+    projectUnique = models.ForeignKey('director.Projects',to_field='teamUnique',on_delete=models.CASCADE,related_name='+', max_length=500, blank=True, null=True)
+    messageSender = models.ForeignKey('authentication.User' ,related_name="+", on_delete=models.CASCADE ,blank=True,null=True, max_length=200, verbose_name="Message From")
     messageTo = models.ForeignKey('authentication.User' , on_delete=models.CASCADE , max_length=200, verbose_name="Message To")    
-    message = models.TextField(verbose_name="Message")
+    message = models.TextField(verbose_name="Message",blank=True,null=True)
     projectMessageFile = models.FileField(upload_to='message_documents/',verbose_name="Message File", blank=True, validators=[validate_file])
     sentDate = models.DateTimeField(default=timezone.now,verbose_name="Date Sent")
     isFirstMessage = models.BooleanField(default=False)

@@ -26,6 +26,8 @@
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{% static 'icon.svg' %}" />
     <link rel="stylesheet" href="{% static 'scrolls.css' %}">
+    <script src="{% static 'scroll.js' %}" ></script>
+
   </head>
   <body>
 
@@ -75,54 +77,18 @@
 
       {% include 'base/topnav.html' %}
 
-      {% if messages %}
-      {% for message in messages %}
-     <!--  <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-      {{ message }}
-      </div> -->
+  
 
 
 
-   <!--    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-{{ message }} <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-  <span aria-hidden="true">&times;</span>
-</button>
-
-</div> -->
+       
 
 
-<input type="text" name="" id="message" value= "{{ message }}" hidden>
-<input type="text" name="" id="message_tag" value= "{{ message.tags }}" hidden>
-<script type="text/javascript">
-var message = document.getElementById("message").value;
-var message_tag = document.getElementById("message_tag").value;
 
-showNotification: ready(function(from, align, message, type) {
-    type = ['', 'info', 'danger', 'success', 'warning', 'rose', 'primary'];
 
-    color = 'success';
-
-    $.notify({
-      icon: "add_alert",
-      message: message
-
-    }, {
-      type: type[color],
-      timer: 50,
-      placement: {
-        from: from,
-        align: align
-      }
-    });
-  });
-
-</script>
-
-      {% endfor %}
-      {% endif %}
         <!-- partial -->
-        <div class="main-panel">
-          <div class="content-wrapper pb-0">
+        <div class="main-panel wrapper-color">
+          <div class="content-wrapper pb-0 wrapper-color" style="background-color: rgb(210, 231, 255);">
 
 
               {% block content %}
@@ -141,6 +107,7 @@ showNotification: ready(function(from, align, message, type) {
     <!-- container-scroller -->
     <!-- plugins:js -->
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}" ></script>
+
 
     <script src="{% static 'assets/vendors/js/vendor.bundle.base.js' %}"></script>
     <!-- endinject -->

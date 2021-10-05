@@ -1,5 +1,5 @@
 from .models import *
-from director.models import Projects
+from director.models import Projects, TeamProjectMessages
 from django import forms
 from authentication.models import User, Teams
 from crispy_forms.helper import FormHelper
@@ -25,7 +25,7 @@ class assignExpertForm(forms.ModelForm):
 
         # self.fields['assignedTeam'].choices = [(x) for x in User.objects.filter( username = 'n'  )]
 
-    assignedExpert = forms.ModelChoiceField(queryset=User.objects.filter( role = 7 ))
+    assignedExpert = forms.ModelChoiceField(queryset=User.objects.filter( role = 4 ))
 
 
   
@@ -39,6 +39,16 @@ class sendMessagesForm(forms.ModelForm):
   
     class Meta:
         model = ExpertProjectMessages
+        fields = ('message','projectMessageFile')
+
+        widgets = {
+            'deadLine': DateInput(),
+        }
+
+class teamSendMessagesForm(forms.ModelForm):
+  
+    class Meta:
+        model = TeamProjectMessages
         fields = ('message','projectMessageFile')
 
         widgets = {

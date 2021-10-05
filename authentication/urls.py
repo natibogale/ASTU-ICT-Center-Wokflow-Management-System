@@ -7,6 +7,7 @@ urlpatterns = [
     path('assistant-director/',include('assistant_director.urls')),
     path('director/',include('director.urls')),
     path('team-leader/',include('team_leader.urls')),
+    path('experts/',include('experts.urls')),
 
 
 ]

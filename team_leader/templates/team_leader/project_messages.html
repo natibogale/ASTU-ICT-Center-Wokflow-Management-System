@@ -9,7 +9,7 @@
   
 {% block content %}
 
-<div class="page-inner scroll-yes  ">
+<div class="page-inner scroll-yes " id="message">
   <div class="page-header ">
   </div>
   {% for list in lists %}
@@ -68,8 +68,6 @@
     
 
 
-
-
        <div class="col-md-6">
       <div class="col grid-margin stretch-card">
         <div class="card">
@@ -102,5 +100,17 @@
 
     {% endfor %}
 
+
 </div>
+<form method="POST" enctype="multipart/form-data" novalidate style="margin-bottom: 80px;">
+{% csrf_token %}
+{{ form|crispy }}
+
+<input
+type="submit"
+class="mr-auto btn btn-success"
+name="submit"
+value="Send Message"
+/>
+</form>
 {% endblock content %}

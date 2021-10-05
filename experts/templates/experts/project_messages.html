@@ -1,0 +1,114 @@
+{% extends "base/index.html" %} 
+{% load static %}
+{% load crispy_forms_filters %} 
+
+
+
+
+{% block content %}
+<div class="page-inner scroll-yes " >
+  
+  <div class="page-header ">
+   </div>
+  {% for list in lists %}
+  {% if list.messageSender.id != user.id %}
+  <div class="row col-md-12">
+
+        <div class="col-md-6">
+            <div class="col grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">{{list.messageSender.firstName}} {{list.messageSender.lastName}}</h4>
+                  </p>
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>Title</th>
+                          <th>Dead Line</th>
+                          <th>Assigned Expert</th>
+                          <th>Urgency</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+            
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    
+
+
+       <div class="col-md-6">
+  
+        </div>
+        
+    </div>
+
+
+
+
+
+
+
+    {% else %}
+
+
+    <div class="row col-md-12">
+
+        
+        <div class="col-md-6">
+        
+        </div>
+    
+
+
+       <div class="col-md-6">
+      <div class="col grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{{list.messageSender.firstName}} {{list.messageSender.lastName}}</h4>
+            </p>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Dead Line</th>
+                    <th>Assigned Expert</th>
+                    <th>Urgency</th>
+                  </tr>
+                </thead>
+                <tbody>
+                
+               
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+        </div>
+    </div>
+{% endif %}
+
+
+    {% endfor %}
+
+
+</div>
+<form method="POST" enctype="multipart/form-data" novalidate style="margin-bottom: 80px;">
+{% csrf_token %}
+{{ form|crispy }}
+
+<input
+type="submit"
+class="mr-auto btn btn-success"
+name="submit"
+value="Send Message"
+/>
+</form>
+{% endblock content %}

@@ -3,5 +3,8 @@
     overflow-y: scroll;
     position: sticky;
     background-color: rgb(175, 175, 233);
-    margin-bottom: 180px;
+    margin-bottom: 20px;
+    overflow:auto;
+    flex-direction: column-reverse;
+    
 }

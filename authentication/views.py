@@ -34,32 +34,16 @@ def home(request):
                         return redirect(valuenext)
                     else:
                         return redirect('dr_home_page')
-                elif lk == 'Team 1 Leader':
+                elif lk == 'Team Leader':
                     if valuenext:
                         return redirect(valuenext)
                     else:
                         return redirect('tl_home_page')
-
-                # elif user.title == 'Record Officer' and user.is_admin==False:
-                #     if valuenext:
-                #         return redirect(valuenext)
-                #     else:
-                #         return redirect('record-officer-home')
-                # elif user.title == 'Team Leader' and user.is_admin==False:
-                #     if valuenext:
-                #         return redirect(valuenext)
-                #     else:
-                #         return redirect('team-leader-home')
-                # elif user.title == 'Lead Engineer' and user.is_admin==False:
-                #     if valuenext:
-                #         return redirect(valuenext)
-                #     else:
-                #         return redirect('lead-engineer-home')
-                # elif user.title == 'Project Engineer' and user.is_admin==False:
-                #     if valuenext:
-                #         return redirect(valuenext)
-                #     else:
-                #         return redirect('project-engineer-home')
+                elif lk == 'Expert':
+                    if valuenext:
+                        return redirect(valuenext)
+                    else:
+                        return redirect('exp_home_page')
         else:
             messages.warning(request, f'The Login Credentials you entered are not correct!')
             return render(request, 'authentication/index.html')
@@ -68,12 +52,8 @@ def home(request):
 
     # messages.info(request, f'Welcome! You have to login to access further pages!')
         return render(request, 'authentication/index.html')
-
-
     # messages.info(request, f'Welcome! You have to login to access further pages!')
     
-
-
 
 def logoutView(request):
     logout(request)

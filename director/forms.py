@@ -28,7 +28,7 @@ class addProjectsForm(forms.ModelForm):
     class Meta:
         model = Projects
         # fields = '__all__'
-        exclude = ['dateAdded','is_seen','created_by','is_active','assignedExpert','currentlyOn','expertUnique','teamUnique']
+        exclude = ['dateAdded','is_seen','created_by','is_active','assignedExpert','currentlyOn','expertUnique','teamUnique','directorApproved','leaderApproved']
 
         widgets = {
             'deadLine': DateInput(),

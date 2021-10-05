@@ -130,3 +130,44 @@
       </button>
     </div>
   </nav>
+
+  {% if messages %}
+  {% for message in messages %}
+  <input type="text" name="" id="message" value= "{{ message }}" hidden>
+  <script>
+  var message = document.getElementById("message").value;
+alert( message );
+  </script>
+
+   
+
+
+<!-- <input type="text" name="" id="message" value= "{{ message }}" hidden>
+<input type="text" name="" id="message_tag" value= "{{ message.tags }}" hidden>
+<script type="text/javascript">
+var message = document.getElementById("message").value;
+var message_tag = document.getElementById("message_tag").value;
+
+showNotification: ready(function(from, align, message, type) {
+type = ['', 'info', 'danger', 'success', 'warning', 'rose', 'primary'];
+
+color = 'success';
+
+$.notify({
+  icon: "add_alert",
+  message: message
+
+}, {
+  type: type[color],
+  timer: 50,
+  placement: {
+    from: from,
+    align: align
+  }
+});
+});
+
+</script> -->
+
+  {% endfor %}
+  {% endif %}

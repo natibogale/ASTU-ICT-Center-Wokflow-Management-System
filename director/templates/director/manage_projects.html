@@ -38,14 +38,20 @@
                   {% for list in lists %}
                   <tr>
                     <td>{{ list.projectTitle }}</td>
+                    {% if list.deadLine > date %}
                     <td>{{ list.deadLine }}</td>
-                
+                    {% else %}
                     <td>
-                     {{ list.assignedTeam }}
+                      <label class="badge badge-danger">Late</label>
+                    </td>
+                    {% endif %}                
+                    <td>
+
+                     <a href="{% url 'dr_project_messages' list.pk  list.assignedTeam %}">{{ list.assignedTeam }}</a>
                     </td>
                     {% if list.is_urgent %}
                       <td>
-                    <label class="badge badge-danger">Urgent</label>
+                    <label class="badge badge-warning ">Urgent</label>
                   </td>
                     {% else %}
                     <td>
