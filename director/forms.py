@@ -28,7 +28,7 @@ class addProjectsForm(forms.ModelForm):
     class Meta:
         model = Projects
         # fields = '__all__'
-        exclude = ['dateAdded','is_seen','created_by','is_active','assignedExpert','currentlyOn','expertUnique','teamUnique','directorApproved','leaderApproved']
+        exclude = ['dateAdded','is_seen','created_by','is_active','assignedExpert','currentlyOn','expertUnique','teamUnique','directorApproved','leaderApproved','directorApprovedDate', 'leaderApprovedDate', 'is_late']
 
         widgets = {
             'deadLine': DateInput(),
@@ -46,3 +46,47 @@ class sendMessagesForm(forms.ModelForm):
             'deadLine': DateInput(),
         }
 
+
+class directorApproveForm(forms.ModelForm):  
+    CHOICES=[('True','Yes'),
+    ('False','No')]
+
+    # Leader_Approved = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect)
+  
+    class Meta:
+        model = Projects
+        fields = ('directorApproved',)
+
+
+
+class projectDetailForm(forms.ModelForm):
+
+    assignedTeam = forms.ModelChoiceField(queryset=Teams.objects.exclude(teamName  ='All'))
+    # def __init__(self, *args, **kwargs):
+    #     super(addProjectsForm, self).__init__(*args, **kwargs)
+    #     self.fields['assignedTeam'].choices = [(  x , x.teamName  ) for x in Teams.objects.exclude(teamName  ='All')]
+
+        # self.fields['assignedTeam'].choices = [(x) for x in User.objects.filter( username = 'n'  )]
+
+    CHOICES=[('True','Yes'),
+    ('False','No')]
+
+    is_urgent = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect)
+    dateAdded = forms.CharField(
+    widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    leaderApproved = forms.BooleanField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    currentlyOn = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    class Meta:
+        model = Projects
+        # fields = '__all__'
+        exclude = ['is_seen','created_by','expertUnique','teamUnique','directorApprovedDate', 'leaderApprovedDate','assignedExpert']
+
+        widgets = {
+            'deadLine': DateInput(),
+        }
+
+    def form_valid(self, form, request):
+        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa',  form.instance.assignedExpert)
+        form.instance.assignedExpert = form.instance.assignedExpert
+        form.instance.assignedExpert = User.objects.get(id = form.instace.assignedExpert)
+        return super().form_valid(form)

@@ -25,7 +25,7 @@
             <h4 class="card-title">Current Projects</h4>
             </p>
             <div class="table-responsive">
-              <table class="table table-hover">
+              <table class="table table-hover" id="example">
                 <thead>
                   <tr>
                     <th>Title</th>
@@ -37,7 +37,7 @@
                 <tbody>
                   {% for list in lists %}
                   <tr>
-                    <td>{{ list.projectTitle }}</td>
+                    <td>  <a href="{% url 'dr_project_detail' list.id %}">{{ list.projectTitle }}</a> </td>
                     {% if list.deadLine > date %}
                     <td>{{ list.deadLine }}</td>
                     {% else %}

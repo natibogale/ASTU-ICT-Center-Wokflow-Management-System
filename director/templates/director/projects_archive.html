@@ -1,0 +1,79 @@
+{% extends "base/index.html" %} 
+{% load static %}
+{% load crispy_forms_filters %} 
+
+
+
+
+
+  
+{% block content %}
+
+<div class="page-inner ">
+  <div class="page-header col-12">
+
+  </div>
+  <div class="row">
+    <div class="col">
+
+
+    <div class="col">
+      <div class="col grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Project's Archive</h4>
+            </p>
+            <div class="table-responsive">
+              <table class="table table-hover" id="example">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Dead Line</th>
+                    <th>Assigned Team</th>
+                    <th>Urgency</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for list in lists %}
+                  <tr>
+                    <td>  <a href="{% url 'dr_project_detail' list.id %}">{{ list.projectTitle }}</a> </td>
+                    {% if list.deadLine > date %}
+                    <td>{{ list.deadLine }}</td>
+                    {% else %}
+                    <td>
+                      <label class="badge badge-danger">Late</label>
+                    </td>
+                    {% endif %}                
+                    <td>
+
+                     <a href="{% url 'dr_project_messages' list.pk  list.assignedTeam %}">{{ list.assignedTeam }}</a>
+                    </td>
+                    {% if list.is_urgent %}
+                      <td>
+                    <label class="badge badge-warning ">Urgent</label>
+                  </td>
+                    {% else %}
+                    <td>
+                    <label class="badge badge-success">Not urgent</label>
+                  </td>
+
+                      {% endif %}
+                  </tr>
+                  {% endfor %}
+               
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+  </div>
+
+  </div>
+</div>
+{% endblock content %}

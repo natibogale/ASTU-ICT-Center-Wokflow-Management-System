@@ -104,27 +104,49 @@ def messagesView(request,id,messageTo):
     context["role"] = len(str(rol))
     context["lists"] =  ExpertProjectMessages.objects.filter(projectUnique  = obj.expertUnique ).order_by('sentDate')
     if request.method == 'POST':
-        print(request.method)
-        form = sendMessagesForm(request.POST, request.FILES)
-        if form.is_valid():
-            message = form.save(commit=False)
-            message.messageSender = request.user
-            message.messageTo = obj.assignedExpert
-            message.projectId = obj
-            message.projectUnique = obj
-            message.save()
-            messages.success(request, f'Message is sent')
-            form = sendMessagesForm(None)
-            context["form"] = form
-            return HttpResponseRedirect("/team-leader/project-messages/"+ str(message.projectId.id) + "/" + message.messageTo.username ) 
-            # render(request, "team_leader/project_messages.html", context)
-        else:
+        if request.POST["submit"] == 'Approve Project':
+            form2 = leaderApproveForm(request.POST, instance=obj)
+            if form2.is_valid():
+                obj.currentlyOn = request.user.firstName + " " + request.user.lastName
+                obj.leaderApprovedDate = date.today()
+                form2 = leaderApproveForm(request.POST, instance=obj)
+                form2.save() 
+                messages.success(request, f'Project is approved from expert')
+                return HttpResponseRedirect("/team-leader/project-messages/"+ str(obj.id) + "/" + messageTo ) 
+            else:
+                form = sendMessagesForm()
+                context["form"] = form
+                form2 = leaderApproveForm()
+                context["form2"] = form2
+                return render(request, "team_leader/project_messages.html", context)
+        elif  request.POST["submit"] == 'Send Message':
+            print(request.method)
             form = sendMessagesForm(request.POST, request.FILES)
-            context["form"] = form
-            return render(request, "team_leader/project_messages.html", context)
+            if form.is_valid():
+                message = form.save(commit=False)
+                message.messageSender = request.user
+                message.messageTo = obj.assignedExpert
+                message.projectId = obj
+                message.projectUnique = obj
+                message.save()
+                messages.success(request, f'Message is sent')
+                form = sendMessagesForm(None)
+                context["form"] = form
+                return HttpResponseRedirect("/team-leader/project-messages/"+ str(message.projectId.id) + "/" + message.messageTo.username ) 
+                # render(request, "team_leader/project_messages.html", context)
+            else:
+                form = sendMessagesForm(request.POST, request.FILES)
+                context["form"] = form
+                form2 = leaderApproveForm()
+                context["form2"] = form2
+                return render(request, "team_leader/project_messages.html", context)
     else:
         form = sendMessagesForm()
         context["form"] = form
+
+        form2 = leaderApproveForm()
+        context["form2"] = form2
+
 
     return render(request, "team_leader/project_messages.html",context)
 

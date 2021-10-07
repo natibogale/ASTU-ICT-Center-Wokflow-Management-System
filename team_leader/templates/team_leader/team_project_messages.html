@@ -11,36 +11,32 @@
 
 <div class="page-inner scroll-yes " id="message">
   <div class="page-header ">
+
   </div>
   {% for list in lists %}
   {% if list.messageSender.id != user.id %}
   <div class="row col-md-12">
 
-        <div class="col-md-6">
-            <div class="col grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">{{list.messageSender.firstName}} {{list.messageSender.lastName}}</h4>
-                  </p>
-                  <div class="table-responsive">
-                    <table class="table table-hover">
-                      <thead>
-                        <tr>
-                          <th>Title</th>
-                          <th>Dead Line</th>
-                          <th>Assigned Expert</th>
-                          <th>Urgency</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-            
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
+    <div class="col-md-6">
+      <div class="col grid-margin stretch-card">
+        <div class="card">
+          <h6 class="pl-2 pt-2">{{list.messageSender.firstName}} {{list.messageSender.lastName}}</h6>
+
+          <div class="card-body">
+            <p>{{ list.message }}</p>
+            {% if list.projectMessageFile %}
+            <div class="table-responsive">
+              <a href="/media/{{ list.projectMessageFile }}"><img class="" style="width: 50px;" src="{% static 'file.png' %}" alt="Attached File Icon">
+              </a>  
             </div>
+            {% endif %}
+            <p style="float: right;" class="mb-0 mr-0">{{ list.sentDate }}</p>
+
+          </div>
         </div>
+      </div>
+        </div>
+        
     
 
 
@@ -71,29 +67,23 @@
        <div class="col-md-6">
       <div class="col grid-margin stretch-card">
         <div class="card">
+          <h6 class="pl-2 pt-2">{{list.messageSender.firstName}} {{list.messageSender.lastName}}</h6>
+
           <div class="card-body">
-            <h4 class="card-title">{{list.messageSender.firstName}} {{list.messageSender.lastName}}</h4>
-            </p>
+            <p>{{ list.message }}</p>
+            {% if list.projectMessageFile %}
             <div class="table-responsive">
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th>Title</th>
-                    <th>Dead Line</th>
-                    <th>Assigned Expert</th>
-                    <th>Urgency</th>
-                  </tr>
-                </thead>
-                <tbody>
-                
-               
-                </tbody>
-              </table>
+              <a href="/media/{{ list.projectMessageFile }}"><img class="" style="width: 50px;" src="{% static 'file.png' %}" alt="Attached File Icon">
+              </a>  
             </div>
+            {% endif %}
+            <p style="float: right;" class="mb-0 mr-0">{{ list.sentDate }}</p>
+
           </div>
         </div>
       </div>
         </div>
+
     </div>
 {% endif %}
 

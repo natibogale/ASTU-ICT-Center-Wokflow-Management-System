@@ -45,8 +45,7 @@ class sendMessagesForm(forms.ModelForm):
             'deadLine': DateInput(),
         }
 
-class teamSendMessagesForm(forms.ModelForm):
-  
+class teamSendMessagesForm(forms.ModelForm):  
     class Meta:
         model = TeamProjectMessages
         fields = ('message','projectMessageFile')
@@ -54,3 +53,18 @@ class teamSendMessagesForm(forms.ModelForm):
         widgets = {
             'deadLine': DateInput(),
         }
+
+
+
+class leaderApproveForm(forms.ModelForm):  
+    CHOICES=[('True','Yes'),
+    ('False','No')]
+
+    # Leader_Approved = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect)
+  
+    class Meta:
+        model = Projects
+        fields = ('leaderApproved',)
+
+
+

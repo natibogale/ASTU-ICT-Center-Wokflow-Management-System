@@ -22,7 +22,7 @@ def validate_file(value):
 
 class Projects(models.Model):
     id = models.AutoField(primary_key=True)
-    projectTitle = models.CharField(max_length=50, verbose_name="Project Title")
+    projectTitle = models.CharField(max_length=150, verbose_name="Project Title")
     projectDescription = models.TextField(verbose_name="Project Description")
     deadLine = models.DateField(verbose_name="Project DeadLine")
     created_by = models.ForeignKey('authentication.User' , on_delete=models.CASCADE , max_length=200, verbose_name="Project Created By")
@@ -36,8 +36,8 @@ class Projects(models.Model):
     expertUnique = models.UUIDField(blank=True, null=True,unique=True)
     currentlyOn = models.CharField(max_length=500, blank=True, null=True)
     is_active = models.BooleanField(default=True)
-    directorApproved = models.BooleanField(default=False)
-    leaderApproved = models.BooleanField(default=False)
+    directorApproved = models.BooleanField(default=False, verbose_name="Approve Project From Team Leader")
+    leaderApproved = models.BooleanField(default=False, verbose_name="Approve Project Submission From Expert")
     directorApprovedDate = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True)
     leaderApprovedDate = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True)
     is_late = models.BooleanField(default=False, blank=True,null=True)
