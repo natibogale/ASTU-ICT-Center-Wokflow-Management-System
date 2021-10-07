@@ -6,8 +6,11 @@ urlpatterns = [
     path('profile/', profile, name="tl_profile"),
     path('manage-projects/', manageProjects, name="tl_manage_projects"),
     path('assign-project/<id>', assignExpert, name="tl_assign_project"),
-    path('project-messages/<id>/<messageTo>', messagesView, name="tl_project_messages"),
+    path('project-messages/<id>', messagesView, name="tl_project_messages"),
     path('team-project-messages/<id>/<messageTo>', teamMessagesView, name="tl_team_project_messages"),
+    path('projects-archive/', projectsArchive, name="tl_project_archive"),
+    path('project-detail/<id>', projectDetail, name="tl_project_detail"),
+
 
 
 

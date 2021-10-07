@@ -32,16 +32,18 @@
             name="submit"
             value="Update Project"
             />
+
           </form>
+
         </div>
 
         <div class="col-md-2">
-            <input
-            type=""
-            class="mr-auto ml-4  btn btn-danger"
-            data-toggle="modal" data-target="#exampleModal" 
-            value="Delete Project"
-            />
+
+            <h5>Project file</h5>
+            <div class="table-responsive">
+              <a href="/media/{{ obj.projectFile }}"><img class="" style="width: 50px;" src="{% static 'file.png' %}" alt="Attached File Icon">
+              </a>  
+            </div>
     
         </div>
   

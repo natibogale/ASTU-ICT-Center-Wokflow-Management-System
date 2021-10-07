@@ -26,7 +26,7 @@ class ExpertProjectMessages(models.Model):
     projectId = models.ForeignKey(Projects ,on_delete=models.CASCADE, max_length=500, verbose_name="Project ID")
     projectUnique = models.ForeignKey('director.Projects',to_field='expertUnique',on_delete=models.CASCADE,related_name='+', max_length=500, blank=True, null=True)
     messageSender = models.ForeignKey('authentication.User' ,related_name="+", on_delete=models.CASCADE ,blank=True,null=True, max_length=200, verbose_name="Message From")
-    messageTo = models.ForeignKey('authentication.User' , on_delete=models.CASCADE , max_length=200, verbose_name="Message To")    
+    messageTo = models.CharField( default="user", max_length=200, verbose_name="Message To")    
     message = models.TextField(verbose_name="Message",blank=True,null=True)
     projectMessageFile = models.FileField(upload_to='message_documents/',verbose_name="Message File", blank=True, validators=[validate_file])
     sentDate = models.DateTimeField(default=timezone.now,verbose_name="Date Sent")

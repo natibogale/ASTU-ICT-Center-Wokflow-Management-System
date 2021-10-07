@@ -29,7 +29,7 @@
                   <tr>
                     <th>Title</th>
                     <th>Deadline</th>
-                    <th>Assigned Team</th>
+                    <th>Team</th>
                     <th>Activity</th>
 
                   </tr>
@@ -37,18 +37,19 @@
                 <tbody>
                   {% for list in lists %}
                   <tr>
-                    <td>  <a href="{% url 'dr_project_detail' list.id %}">{{ list.projectTitle }}</a> </td>
+                    <td>  <a href="{% url 'exp_project_detail' list.id %}">{{ list.projectTitle }}</a> </td>
                     {% if list.deadLine > date %}
                     <td>{{ list.deadLine }}</td>
                     {% else %}
                     <td>
                       <label class="badge badge-danger">Late</label>
                     </td>
-                    {% endif %}                
-                    <td>
+                    {% endif %}        
+        
+                    
 
-                     <a href="{% url 'dr_project_messages' list.pk  list.assignedTeam %}">{{ list.assignedTeam }}</a>
-                    </td>
+                      <td><a href="{% url 'exp_project_messages' list.pk   %}">{{ list.assignedTeam }}</a></td>
+                    
                     {% if list.is_active %}
                       <td>
                     <label class="badge badge-primary ">Active</label>

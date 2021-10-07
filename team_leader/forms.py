@@ -14,25 +14,17 @@ class DateInput(forms.DateInput):
 
 class assignExpertForm(forms.ModelForm):
     
-    # assignedExpert = forms.ChoiceField(choices = [])
-    # def __init__(self, *args, **kwargs):
-    #     team = kwargs.pop('team')
-    #     fr = team
-    #     print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',team)
-    #     super(assignExpertForm, self).__init__(*args, **kwargs)
 
-        # self.fields['assignedExpert'].choices = [(  x.pk , x.firstName  ) for x in User.objects.filter(team = team, role = 7)]
-
-        # self.fields['assignedTeam'].choices = [(x) for x in User.objects.filter( username = 'n'  )]
-
-    assignedExpert = forms.ModelChoiceField(queryset=User.objects.filter( role = 4 ))
+    # CHOICES=[('True','Yes'),
+    # ('False','No')]
+    # assignToExperts = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect)
 
 
   
     class Meta:
         model = Projects
         # fields = '__all__'
-        fields = ('assignedExpert',)
+        fields = ('assignToExperts',)
 
 
 class sendMessagesForm(forms.ModelForm):
@@ -67,4 +59,41 @@ class leaderApproveForm(forms.ModelForm):
         fields = ('leaderApproved',)
 
 
+
+
+
+
+
+class teamProjectDetailForm(forms.ModelForm):
+    CHOICES=[('True','Yes'),
+    ('False','No')]
+
+    assignToExperts = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect)
+
+    def __init__(self, *args, **kwargs):
+        super(teamProjectDetailForm, self).__init__(*args, **kwargs)
+        self.fields['projectDescription'].widget.attrs['readonly'] = True 
+        self.fields['projectTitle'].widget.attrs['readonly'] = True 
+
+        # self.fields['assignedTeam'].choices = [(x) for x in User.objects.filter( username = 'n'  )]
+
+    CHOICES=[('True','Yes'),
+    ('False','No')]
+    # projectDescription = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    # projectFile = forms.FileField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+
+    deadLine = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    is_urgent = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    is_late = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+
+    currentlyOn = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+
+    class Meta:
+        model = Projects
+        # fields = '__all__'
+        exclude = ['is_seen','is_active','directorApproved','created_by','expertUnique','teamUnique','directorApprovedDate', 'leaderApprovedDate','assignedTeam','projectFile','dateAdded']
+
+        widgets = {
+            'deadLine': DateInput(),
+        }
 

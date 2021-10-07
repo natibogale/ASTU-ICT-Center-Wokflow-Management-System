@@ -28,7 +28,7 @@ class addProjectsForm(forms.ModelForm):
     class Meta:
         model = Projects
         # fields = '__all__'
-        exclude = ['dateAdded','is_seen','created_by','is_active','assignedExpert','currentlyOn','expertUnique','teamUnique','directorApproved','leaderApproved','directorApprovedDate', 'leaderApprovedDate', 'is_late']
+        exclude = ['dateAdded','is_seen','created_by','is_active','assignToExperts','currentlyOn','expertUnique','teamUnique','directorApproved','leaderApproved','directorApprovedDate', 'leaderApprovedDate', 'is_late']
 
         widgets = {
             'deadLine': DateInput(),
@@ -74,19 +74,26 @@ class projectDetailForm(forms.ModelForm):
     is_urgent = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect)
     dateAdded = forms.CharField(
     widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    leaderApproved = forms.BooleanField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
     currentlyOn = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+
     class Meta:
         model = Projects
         # fields = '__all__'
-        exclude = ['is_seen','created_by','expertUnique','teamUnique','directorApprovedDate', 'leaderApprovedDate','assignedExpert']
+        exclude = ['is_seen','created_by','expertUnique','teamUnique', 'leaderApprovedDate','assignToExperts','leaderApproved','directorApprovedDate']
 
         widgets = {
             'deadLine': DateInput(),
         }
 
-    def form_valid(self, form, request):
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa',  form.instance.assignedExpert)
-        form.instance.assignedExpert = form.instance.assignedExpert
-        form.instance.assignedExpert = User.objects.get(id = form.instace.assignedExpert)
-        return super().form_valid(form)
+
+
+
+class profileDetail(forms.ModelForm):
+
+    class Meta:
+        model = User
+        exclude = ['password','is_admin','role','team','is_active','is_staff', 'is_superuser', 'date_joined','last_login', 'last_edit']
+
+        widgets = {
+            'deadLine': DateInput(),
+        }

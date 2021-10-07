@@ -29,14 +29,14 @@
                   <tr>
                     <th>Title</th>
                     <th>Dead Line</th>
-                    <!-- <th>Assigned Expert</th> -->
+                    <th>Team</th>
                     <th>Urgency</th>
                   </tr>
                 </thead>
                 <tbody>
                   {% for list in lists %}
                   <tr>
-                    <td><a href="{% url 'exp_project_messages' list.pk  list.assignedExpert %}">{{ list.projectTitle }}</a></td>
+                    <td><a href="{% url 'exp_project_detail' list.id %}">{{ list.projectTitle }}</a></td>
                     {% if list.deadLine > date %}
                     <td>{{ list.deadLine }}</td>
                     {% else %}
@@ -44,15 +44,9 @@
                       <label class="badge badge-danger">Late</label>
                     </td>
                     {% endif %} 
-                    <!-- <td>
-                      {% if list.assignedExpert %}
-                      <a href="{% url 'tl_project_messages' list.pk  list.assignedExpert %}">{{ list.assignedExpert }}</a>
+                    <td><a href="{% url 'exp_project_messages' list.pk   %}">{{ list.assignedTeam }}</a></td>
 
-                      {% else %}
-                      <a href="{% url 'tl_assign_project' list.pk %}">{{ list.assignedExpert }}</a>
-
-                      {% endif %}
-                    </td> -->
+               
             
                     {% if list.is_urgent %}
                       <td>

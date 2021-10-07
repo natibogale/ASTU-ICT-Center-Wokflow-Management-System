@@ -12,8 +12,10 @@ from datetime import date
 @login_required
 def index(request):
     context = {}
-    
+    context["projects"] = Projects.objects.all().order_by('-dateAdded')
     context["data"] = User.objects.get(username = request.user.username)
+    context["today"] = date.today()
+    print('AAAAAAAAAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     rol = request.user.role
     context["role"] = len(str(rol))
     return render(request, 'director/index.html', context)
@@ -24,8 +26,29 @@ def index(request):
 def profile(request):
     context = {}
     context["data"] = User.objects.get(username = request.user.username)
+    obj = User.objects.get(username = request.user.username)
     rol = request.user.role
+
     context["role"] = len(str(rol))
+    if request.method == 'POST':
+        form = profileDetail(request.POST or None,
+                                 request.FILES or None, instance=obj)
+        if form.is_valid():
+            ref = form.cleaned_data["username"]
+            form.save()
+            messages.success(
+                request, f'"{ ref }"   your profile has been updated!')
+
+            return redirect('dr_profile')
+
+        else:
+            context["form"] = form
+            return render(request, 'director/profile.html', context)
+
+    else:
+        form = profileDetail(instance=obj)
+        context["form"] = form
+
     return render(request, 'director/profile.html', context)
 
 
@@ -160,24 +183,52 @@ def projectDetail(request,id):
     context["form"] = form
     context["obj"] = obj
     if request.method == 'POST':
-        print(request.method)
-        form = projectDetailForm(request.POST or None,request.FILES or None, instance=obj)
-        if form.is_valid():
-            project = form.save(commit=False)
-            team = form.cleaned_data["assignedTeam"]
-            usr = User.objects.get(team = team , role = 3 )
-            project.currentlyOn = usr.firstName + ' ' + usr.lastName 
-            project.save()
-            messages.success(request, f'Project has been Updated!')
-            return HttpResponseRedirect("/director/project-detail/"+ str(id)  ) 
+        if request.POST["submit"] == 'Delete Project':
+            obj = get_object_or_404(Projects, id = id)
+            dire = Projects.objects.filter(created_by = request.user.id)
+            if obj in dire:
+                obj.delete()
+                messages.success(request, f'Project    "{ obj }"   has been deleted!')
+                return redirect('dr_manage_projects')
+            else:
+                messages.warning(request, f'Project    "{ obj }"   no longer exists !')
+                return redirect('dr_manage_projects')
 
-        else:
-            form = projectDetailForm(request.POST or None,
-                                 request.FILES or None, instance=obj)
-            context["form"] = form
-            return render(request, "director/project_detail.html", context)
+        elif request.POST["submit"] == 'Update Project':
+            print(request.method)
+            form = projectDetailForm(request.POST or None,request.FILES or None, instance=obj)
+            print('aaaaaaaaaaaaaaaaaaaaaaa',form.is_valid(),form)
+
+            if form.is_valid():
+                print('aaaaaaaaaaaaaaaaaaaaaaa',form.is_valid())
+                project = form.save(commit=False)
+                team = form.cleaned_data["assignedTeam"]
+                usr = User.objects.get(team = team , role = 3 )
+                project.currentlyOn = usr.firstName + ' ' + usr.lastName 
+                project.save()
+                messages.success(request, f'Project has been Updated!')
+                return HttpResponseRedirect("/director/project-detail/"+ str(id)  ) 
+
+            else:
+                form = projectDetailForm(request.POST or None,
+                                    request.FILES or None, instance=obj)
+                context["form"] = form
+                return render(request, "director/project_detail.html", context)
     else:
         form = projectDetailForm(instance=obj)
         context["form"] = form
 
     return render(request, "director/project_detail.html", context)
+
+
+
+@login_required
+def projectsDelete(request, id):
+    obj = get_object_or_404(Projects, id = id)
+    dire = Projects.objects.filter(directorate = request.user.directorate)
+    if obj in dire:
+        obj.delete()
+        messages.success(request, f'Project    "{ obj }"   has been deleted!')
+        return redirect('dr-manage-projects')
+    else:
+        return redirect('dr-manage-projects')

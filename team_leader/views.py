@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 
 from authentication.models import User
-from director.forms import addProjectsForm
+from director.forms import addProjectsForm, profileDetail
 from director.models import  Projects, TeamProjectMessages
 from .models import *
 from .forms import *
@@ -25,8 +25,29 @@ def index(request):
 def profile(request):
     context = {}
     context["data"] = User.objects.get(username = request.user.username)
+    obj = User.objects.get(username = request.user.username)
     rol = request.user.role
+
     context["role"] = len(str(rol))
+    if request.method == 'POST':
+        form = profileDetail(request.POST or None,
+                                 request.FILES or None, instance=obj)
+        if form.is_valid():
+            ref = form.cleaned_data["username"]
+            form.save()
+            messages.success(
+                request, f'"{ ref }"   your profile has been updated!')
+
+            return redirect('tl_profile')
+
+        else:
+            context["form"] = form
+            return render(request, 'team_leader/profile.html', context)
+
+    else:
+        form = profileDetail(instance=obj)
+        context["form"] = form
+
     return render(request, 'team_leader/profile.html', context)
 
 
@@ -76,9 +97,7 @@ def assignExpert(request,id):
         if form.is_valid():
             project = form.save(commit=False)
             project.expertUnique = uuid.uuid1()
-            pr = form.cleaned_data["assignedExpert"]
-            usr = User.objects.get(id = pr.id )
-            project.currentlyOn = usr.firstName + ' ' + usr.lastName 
+            project.currentlyOn = "Experts"
             project.save()
             messages.success(request, f'Project has been assigned')
             return redirect ('tl_manage_projects')
@@ -95,7 +114,7 @@ def assignExpert(request,id):
 
 
 @login_required
-def messagesView(request,id,messageTo):
+def messagesView(request,id):
     obj = get_object_or_404(Projects, id = id)
     context = {}    
     context["data"] = User.objects.get(username = request.user.username)
@@ -112,7 +131,7 @@ def messagesView(request,id,messageTo):
                 form2 = leaderApproveForm(request.POST, instance=obj)
                 form2.save() 
                 messages.success(request, f'Project is approved from expert')
-                return HttpResponseRedirect("/team-leader/project-messages/"+ str(obj.id) + "/" + messageTo ) 
+                return HttpResponseRedirect("/team-leader/project-messages/"+ str(obj.id)  ) 
             else:
                 form = sendMessagesForm()
                 context["form"] = form
@@ -125,14 +144,14 @@ def messagesView(request,id,messageTo):
             if form.is_valid():
                 message = form.save(commit=False)
                 message.messageSender = request.user
-                message.messageTo = obj.assignedExpert
                 message.projectId = obj
+                message.messageTo = "Experts"
                 message.projectUnique = obj
                 message.save()
                 messages.success(request, f'Message is sent')
                 form = sendMessagesForm(None)
                 context["form"] = form
-                return HttpResponseRedirect("/team-leader/project-messages/"+ str(message.projectId.id) + "/" + message.messageTo.username ) 
+                return HttpResponseRedirect("/team-leader/project-messages/"+ str(message.projectId.id) ) 
                 # render(request, "team_leader/project_messages.html", context)
             else:
                 form = sendMessagesForm(request.POST, request.FILES)
@@ -171,7 +190,7 @@ def teamMessagesView(request,id,messageTo):
         if form.is_valid():
             message = form.save(commit=False)
             message.messageSender = request.user
-            message.messageTo = obj.assignedExpert
+            message.messageTo = obj.created_by  
             message.projectId = obj
             message.projectUnique = obj
             message.save()
@@ -188,3 +207,62 @@ def teamMessagesView(request,id,messageTo):
         context["form"] = form
 
     return render(request, "team_leader/team_project_messages.html",context)
+
+
+
+
+@login_required
+def projectsArchive(request):
+    context = {}
+    context["data"] = User.objects.get(username = request.user.username)
+    rol = request.user.role
+    context["role"] = len(str(rol))
+    context["date"] = date.today()
+    context["lists"] = Projects.objects.filter(assignedTeam = request.user.team ).order_by('-dateAdded')
+    return render(request, "team_leader/projects_archive.html", context)
+
+
+
+
+
+
+
+@login_required
+def projectDetail(request,id):
+    context = {}
+    context["data"] = User.objects.get(username = request.user.username)
+    rol = request.user.role
+    context["role"] = len(str(rol))
+    context["date"] = date.today()
+    obj = Projects.objects.get(id=id)
+    form = teamProjectDetailForm(instance=obj)
+    context["form"] = form
+    context["obj"] = obj
+    
+
+
+    if request.method == 'POST':        
+        print(request.method)
+        form = teamProjectDetailForm(request.POST or None,request.FILES or None, instance=obj)
+        print('aaaaaaaaaaaaaaaaaaaaaaa',form.is_valid(),form)
+
+        if form.is_valid():
+            print('aaaaaaaaaaaaaaaaaaaaaaa',form.is_valid())
+            project = form.save(commit=False)
+            team = form.cleaned_data["assignToExperts"]
+            usr = User.objects.get(team = request.user.team , role = 4 )
+            project.currentlyOn = usr.firstName + ' ' + usr.lastName 
+            project.save()
+            messages.success(request, f'Project has been Updated!')
+            return HttpResponseRedirect("/team-leader/project-detail/"+ str(id)  ) 
+
+        else:
+            form = teamProjectDetailForm(request.POST or None,
+                                request.FILES or None, instance=obj)
+            context["form"] = form
+            return render(request, "team_leader/project_detail.html", context)
+    else:
+        form = teamProjectDetailForm(instance=obj)
+        context["form"] = form
+
+    return render(request, "team_leader/project_detail.html", context)
