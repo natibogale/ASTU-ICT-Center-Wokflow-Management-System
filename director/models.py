@@ -126,6 +126,7 @@ class Reports(models.Model):
     leaderApproved = models.BooleanField(default=False, verbose_name="Approve Report Submission From Experts")
     assistantApproved = models.BooleanField(default=False, verbose_name="Approve Report Submission From Teams")
     directorApprovedDate = models.DateField(auto_now=False, auto_now_add=False, default =None, blank=True, null=True, verbose_name="Report Approved on")
+    assistantApproved = models.DateField(auto_now=False, auto_now_add=False, default =None, blank=True, null=True, verbose_name="Report approved from assistant director on")
     leaderApprovedDate = models.DateField(auto_now=False, auto_now_add=False, blank=True,default =None, null=True)
     is_late = models.BooleanField(default=False, blank=True,null=True)
     

@@ -97,3 +97,7 @@ class teamProjectDetailForm(forms.ModelForm):
             'deadLine': DateInput(),
         }
 
+
+
+
+
