@@ -27,23 +27,23 @@ def home(request):
                         print("sdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf")
                         return redirect(valuenext)
                     else:
-                        return redirect('ad_home_page') 
+                        return redirect('ad_manage_reports') 
 
                 elif lk == 'ICT Director':
                     if valuenext:
                         return redirect(valuenext)
                     else:
-                        return redirect('dr_home_page')
+                        return redirect('dr_manage_projects')
                 elif lk == 'Team Leader':
                     if valuenext:
                         return redirect(valuenext)
                     else:
-                        return redirect('tl_home_page')
+                        return redirect('tl_manage_projects')
                 elif lk == 'Expert':
                     if valuenext:
                         return redirect(valuenext)
                     else:
-                        return redirect('exp_home_page')
+                        return redirect('exp_manage_projects')
         else:
             messages.warning(request, f'The Login Credentials you entered are not correct!')
             return render(request, 'authentication/index.html')

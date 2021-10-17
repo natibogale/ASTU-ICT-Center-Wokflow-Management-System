@@ -300,21 +300,8 @@ def reportDetail(request,id):
     context["form"] = form
     context["obj"] = obj
     context["teams"] = Teams.objects.exclude(teamName = 'All')
-    if request.method == 'POST':
-        form = reportDetailForm(request.POST or None,request.FILES or None, instance=obj)
-        if form.is_valid():
-            obj.leaderApprovedDate = date.today()
-            form = reportDetailForm(request.POST or None,request.FILES or None, instance=obj)
-            form.save()
-            messages.success(request, f'Report has been Updated!')
-            return HttpResponseRedirect("/team-leader/report-detail/"+ str(id)) 
-        else:
-            form = reportDetailForm(request.POST or None,request.FILES or None, instance=obj)
-            context["form"] = form
-            return render(request, "team_leader/report_detail.html", context)
-    else:
-        form = reportDetailForm(instance=obj)
-        context["form"] = form
+    form = reportDetailForm(instance=obj)
+    context["form"] = form
 
     return render(request, "team_leader/report_detail.html", context)
 
@@ -358,4 +345,64 @@ def reportMessagesView(request,id):
 
 
     return render(request, "team_leader/report_messages.html",context)
+
+
+
+
+
+
+
+
+
+
+@login_required
+def teamReportMessagesView(request,id):
+    obj = get_object_or_404(Reports, id = id)
+    context = {}    
+    context["data"] = User.objects.get(username = request.user.username)
+    rol = request.user.role
+    context["obj"] = obj
+    context["role"] = len(str(rol))
+    context["team"] = request.user.team
+    messageTo = request.user.team
+    acv = Teams.objects.get(id = messageTo.id)
+    context["lists"] =  TeamMessages.objects.filter(Q(reportId = id), Q(messageTo = messageTo.id)).order_by('sentDate')
+    if request.method == 'POST':
+        print(request.method)
+        form = teamReportMessagesForm(request.POST, request.FILES)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.messageSender = request.user
+            team = Teams.objects.get(id=messageTo.id)
+            message.messageTo = team
+            message.reportId = obj
+            message.save()
+            messages.success(request, f'Message is sent')
+            form = teamReportMessagesForm()
+            context["form"] = form
+            return HttpResponseRedirect("/team-leader/team-report-messages/"+ str(message.reportId.id) ) 
+        else:
+            form = teamReportMessagesForm(request.POST, request.FILES)
+            context["form"] = form
+            return render(request, "team_leader/team_report_messages.html", context)
+    else:
+        form = teamReportMessagesForm()
+        context["form"] = form
+
+
+    return render(request, "team_leader/team_report_messages.html",context)
+
+
+
+
+
+@login_required
+def reportsArchive(request):
+    context = {}
+    context["data"] = User.objects.get(username = request.user.username)
+    rol = request.user.role
+    context["role"] = len(str(rol))
+    context["date"] = date.today()
+    context["lists"] = Reports.objects.all().order_by('-dateAdded')
+    return render(request, "team_leader/reports_archive.html", context)
 

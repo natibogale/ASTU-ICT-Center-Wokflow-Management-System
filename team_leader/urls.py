@@ -15,7 +15,8 @@ urlpatterns = [
     path('manage-reports/', manageReports, name="tl_manage_reports"),
     path('report-detail/<id>', reportDetail, name="tl_report_detail"),
     path('report-messages/<id>', reportMessagesView, name="tl_report_messages"),
-
+    path('team-report-messages/<id>', teamReportMessagesView, name="tl_team_report_messages"),
+    path('reports-archive/', reportsArchive, name="tl_report_archive"),
 
 
 

@@ -1,13 +1,14 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models.query_utils import Q
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 
 from authentication.models import User
 from director.forms import addProjectsForm, profileDetail
-from director.models import  Projects, TeamProjectMessages
-from team_leader.forms import sendMessagesForm
-from team_leader.models import ExpertProjectMessages
+from director.models import  Projects, Reports, TeamProjectMessages
+from team_leader.forms import sendMessagesForm, teamReportMessagesForm
+from team_leader.models import ExpertProjectMessages, TeamMessages
 from .models import *
 from .forms import *
 import uuid
@@ -141,3 +142,93 @@ def projectDetail(request,id):
     context["obj"] = obj
     
     return render(request, "experts/project_detail.html", context)
+
+
+
+
+@login_required
+def manageReports(request):
+    context = {}
+    context["data"] = User.objects.get(username = request.user.username)
+    rol = request.user.role
+    context["role"] = len(str(rol))
+    context["date"] = date.today()
+    context["lists"] = Reports.objects.filter(is_active=True).order_by('-dateAdded')
+    return render(request, "experts/manage_reports.html", context)
+
+
+
+
+
+@login_required
+def reportDetail(request,id):
+    context = {}
+    context["data"] = User.objects.get(username = request.user.username)
+    rol = request.user.role
+    context["role"] = len(str(rol))
+    context["date"] = date.today()
+    obj = Reports.objects.get(id=id)
+    form = reportDetailForm(instance=obj)
+    context["form"] = form
+    context["obj"] = obj
+    context["teams"] = Teams.objects.exclude(teamName = 'All')
+    form = reportDetailForm(instance=obj)
+    context["form"] = form
+
+    return render(request, "experts/report_detail.html", context)
+
+
+
+
+@login_required
+def reportsArchive(request):
+    context = {}
+    context["data"] = User.objects.get(username = request.user.username)
+    rol = request.user.role
+    context["role"] = len(str(rol))
+    context["date"] = date.today()
+    context["lists"] = Reports.objects.all().order_by('-dateAdded')
+    return render(request, "experts/reports_archive.html", context)
+
+
+
+
+
+@login_required
+def teamReportMessagesView(request,id):
+    obj = get_object_or_404(Reports, id = id)
+    context = {}    
+    context["data"] = User.objects.get(username = request.user.username)
+    rol = request.user.role
+    context["obj"] = obj
+    context["role"] = len(str(rol))
+    context["team"] = request.user.team
+    messageTo = request.user.team
+    acv = Teams.objects.get(id = messageTo.id)
+    context["lists"] =  TeamMessages.objects.filter(Q(reportId = id), Q(messageTo = messageTo.id)).order_by('sentDate')
+    if request.method == 'POST':
+        print(request.method)
+        form = teamReportMessagesForm(request.POST, request.FILES)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.messageSender = request.user
+            team = Teams.objects.get(id=messageTo.id)
+            message.messageTo = team
+            message.reportId = obj
+            message.save()
+            messages.success(request, f'Message is sent')
+            form = teamReportMessagesForm()
+            context["form"] = form
+            return HttpResponseRedirect("/experts/team-report-messages/"+ str(message.reportId.id) ) 
+        else:
+            form = teamReportMessagesForm(request.POST, request.FILES)
+            context["form"] = form
+            return render(request, "experts/team_report_messages.html", context)
+    else:
+        form = teamReportMessagesForm()
+        context["form"] = form
+
+
+    return render(request, "experts/team_report_messages.html",context)
+
+

@@ -118,7 +118,7 @@ class reportDetailForm(forms.ModelForm):
         # fields = '__all__'
         exclude = ['created_by','is_seen','directorUnique','directorApproved',
         'directorApprovedDate','assistantApproved',
-        'assistantApprovedDate','leaderApprovedDate','reportFile','is_active']
+        'assistantApprovedDate','reportFile','is_active']
 
         widgets = {
             'deadLine': DateInput(),
@@ -128,11 +128,11 @@ class reportDetailForm(forms.ModelForm):
 
 
 
-# class teamSendMessagesForm(forms.ModelForm):  
-#     class Meta:
-#         model = TeamProjectMessages
-#         fields = ('message','reportMessageFile')
+class teamReportMessagesForm(forms.ModelForm):  
+    class Meta:
+        model = TeamMessages
+        fields = ('message','reportMessageFile')
 
-#         widgets = {
-#             'deadLine': DateInput(),
-#         }
+        widgets = {
+            'deadLine': DateInput(),
+        }
