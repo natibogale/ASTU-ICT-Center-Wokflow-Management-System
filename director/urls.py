@@ -11,4 +11,14 @@ urlpatterns = [
     path('project-detail/<id>', projectDetail, name="dr_project_detail"),
     path('project-messages/<id>/<messageTo>', messagesView, name="dr_project_messages"),
 
+
+    path('request-project/', addReports, name="dr_request_reports"),
+    path('manage-reports/', manageReports, name="dr_manage_reports"),
+    path('report-messages/<id>', reportMessagesView, name="dr_report_messages"),
+    path('report-detail/<id>', reportDetail, name="dr_report_detail"),
+    path('reports-archive/', reportsArchive, name="dr_report_archive"),
+
+
+
+
 ]

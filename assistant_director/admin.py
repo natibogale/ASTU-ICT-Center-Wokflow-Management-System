@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import (TeamReportMessages)
+from .models import  AssistantMessages
 
 # Register your models here.
 
@@ -22,4 +22,4 @@ class reportMessages(admin.ModelAdmin):
     fieldsets = ()
 
 
-admin.site.register(TeamReportMessages,reportMessages)
+admin.site.register(AssistantMessages,reportMessages)

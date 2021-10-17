@@ -200,12 +200,13 @@ def projectDetail(request,id):
             print('aaaaaaaaaaaaaaaaaaaaaaa',form.is_valid(),form)
 
             if form.is_valid():
-                print('aaaaaaaaaaaaaaaaaaaaaaa',form.is_valid())
-                project = form.save(commit=False)
                 team = form.cleaned_data["assignedTeam"]
                 usr = User.objects.get(team = team , role = 3 )
-                project.currentlyOn = usr.firstName + ' ' + usr.lastName 
-                project.save()
+                obj.currentlyOn = usr.firstName + ' ' + usr.lastName 
+                if form.cleaned_data["directorApproved"] == True:
+                    obj.directorApprovedDate = date.today()
+                form = projectDetailForm(request.POST or None,request.FILES or None, instance=obj)
+                form.save()
                 messages.success(request, f'Project has been Updated!')
                 return HttpResponseRedirect("/director/project-detail/"+ str(id)  ) 
 
@@ -232,3 +233,173 @@ def projectsDelete(request, id):
         return redirect('dr-manage-projects')
     else:
         return redirect('dr-manage-projects')
+
+
+
+
+
+
+@login_required
+def addReports(request):
+    context = {}
+    context["data"] = User.objects.get(username = request.user.username)
+    rol = request.user.role
+    context["role"] = len(str(rol))
+
+    if request.method == 'POST':
+        print(request.method)
+        form = requestReportsForm(request.POST, request.FILES)
+        if form.is_valid():
+            report = form.save(commit=False)
+            report.created_by = request.user
+            report.save()
+            messages.success(request, f'New Report has been requested!')
+            return redirect ('dr_manage_reports')
+        else:
+            form = requestReportsForm(request.POST, request.FILES)
+            context["form"] = form
+            return render(request, "director/add_reports.html", context)
+    else:
+        form = requestReportsForm()
+        context["form"] = form
+
+    return render(request, "director/add_reports.html", context)
+
+
+
+
+@login_required
+def manageReports(request):
+    context = {}
+    context["data"] = User.objects.get(username = request.user.username)
+    rol = request.user.role
+    context["role"] = len(str(rol))
+    context["date"] = date.today()
+    context["lists"] = Reports.objects.filter(is_active=True).order_by('-dateAdded')
+    return render(request, "director/manage_reports.html", context)
+
+
+
+
+
+
+
+@login_required
+def reportMessagesView(request,id):
+    obj = get_object_or_404(Reports, id = id)
+    context = {}    
+    context["data"] = User.objects.get(username = request.user.username)
+    rol = request.user.role
+    context["obj"] = obj
+    context["role"] = len(str(rol))
+    context["lists"] =  DirectorReportMessages.objects.filter( reportId = id).order_by('sentDate')
+    if request.method == 'POST':
+        if request.POST["submit"] == 'Approve Report':
+            form2 = directorReportApproveForm(request.POST, instance=obj)
+            if form2.is_valid():
+                obj.currentlyOn = request.user.firstName + " " + request.user.lastName
+                obj.is_active = False
+                obj.directorApprovedDate = date.today()
+                if obj.deadLine < date.today():
+                    obj.is_late = True
+                form2 = directorReportApproveForm(request.POST, instance=obj)
+                form2.save() 
+                messages.success(request, f'Report is approved from Team Leader')
+                return HttpResponseRedirect("/director/report-messages/"+ str(obj.id)  ) 
+            else:
+                form = reportSendMessagesForm()
+                context["form"] = form
+                form2 = directorReportApproveForm()
+                context["form2"] = form2
+                return render(request, "director/report_messages.html", context)
+        elif  request.POST["submit"] == 'Send Message':
+            print(request.method)
+            form = reportSendMessagesForm(request.POST, request.FILES)
+            if form.is_valid():
+                message = form.save(commit=False)
+                message.messageSender = request.user
+                to = User.objects.get(role=2)
+                message.messageTo = to
+                message.reportId = obj
+                message.save()
+                messages.success(request, f'Message is sent')
+                form = reportSendMessagesForm()
+                context["form"] = form
+                return HttpResponseRedirect("/director/report-messages/"+ str(message.reportId.id) ) 
+            else:
+                form = reportSendMessagesForm(request.POST, request.FILES)
+                context["form"] = form
+                form2 = directorApproveForm()
+                context["form2"] = form2
+                return render(request, "director/report_messages.html", context)
+    else:
+        form = reportSendMessagesForm()
+        context["form"] = form
+        form2 = directorReportApproveForm()
+        context["form2"] = form2
+
+    return render(request, "director/report_messages.html",context)
+
+
+
+
+
+
+
+@login_required
+def reportDetail(request,id):
+    context = {}
+    context["data"] = User.objects.get(username = request.user.username)
+    rol = request.user.role
+    context["role"] = len(str(rol))
+    context["date"] = date.today()
+    obj = Reports.objects.get(id=id)
+    form = reportDetailForm(instance=obj)
+    context["form"] = form
+    context["obj"] = obj
+    if request.method == 'POST':
+        if request.POST["submit"] == 'Delete Report':
+            obj = get_object_or_404(Reports, id = id)
+            dire = Reports.objects.filter(created_by = request.user.id)
+            if obj in dire:
+                obj.delete()
+                messages.success(request, f'Report    "{ obj }"   has been deleted!')
+                return redirect('dr_manage_reports')
+            else:
+                messages.warning(request, f'Report    "{ obj }"   no longer exists !')
+                return redirect('dr_manage_reports')
+
+        elif request.POST["submit"] == 'Update Report':
+            print(request.method)
+            form = reportDetailForm(request.POST or None,request.FILES or None, instance=obj)
+            if form.is_valid():
+                if form.cleaned_data["directorApproved"] == True:
+                    obj.directorApprovedDate = date.today()
+                form = reportDetailForm(request.POST or None,request.FILES or None, instance=obj)
+                form.save()
+                messages.success(request, f'Report has been Updated!')
+                return HttpResponseRedirect("/director/report-detail/"+ str(id)) 
+            else:
+                form = reportDetailForm(request.POST or None,request.FILES or None, instance=obj)
+                context["form"] = form
+                return render(request, "director/report_detail.html", context)
+    else:
+        form = reportDetailForm(instance=obj)
+        context["form"] = form
+
+    return render(request, "director/report_detail.html", context)
+
+
+
+
+
+@login_required
+def reportsArchive(request):
+    context = {}
+    context["data"] = User.objects.get(username = request.user.username)
+    rol = request.user.role
+    context["role"] = len(str(rol))
+    context["date"] = date.today()
+    context["lists"] = Reports.objects.all().order_by('-dateAdded')
+
+    return render(request, "director/reports_archive.html", context)

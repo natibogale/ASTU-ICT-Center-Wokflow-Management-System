@@ -2,7 +2,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.core.validators import validate_slug, validate_email
+from assistant_director.models import AssistantMessages
 from authentication.models import User
+from director.models import DirectorReportMessages, Reports
 
 
 
@@ -60,3 +62,65 @@ class registrationForm(UserCreationForm):
     #                 raise forms.ValidationError("There is a Team Leader registered for this Team! There can only be one Team Leader. You first must remove the previous Team Leader to continue!")
 
 
+
+
+class reportDetailForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(reportDetailForm, self).__init__(*args, **kwargs)
+        self.fields['reportTitle'].widget.attrs['readonly'] = True 
+        self.fields['reportsDescription'].widget.attrs['readonly'] = True 
+        self.fields['deadLine'].widget.attrs['readonly'] = True 
+        self.fields['dateAdded'].widget.attrs['readonly'] = True 
+        self.fields['is_late'].widget.attrs['readonly'] = True 
+
+    dateAdded = forms.CharField(
+    widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    class Meta:
+        model = Reports
+        # fields = '__all__'
+        exclude = ['created_by','is_seen','directorUnique','directorApproved',
+        'leaderApproved','directorApprovedDate',
+        'assistantApprovedDate','leaderApprovedDate','reportFile','is_active']
+
+        widgets = {
+            'deadLine': DateInput(),
+        }
+
+
+
+
+class assistantReportApproveForm(forms.ModelForm):  
+    CHOICES=[('True','Yes'),
+    ('False','No')]
+
+    # Leader_Approved = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect)
+  
+    class Meta:
+        model = Reports
+        fields = ('assistantApproved',)
+
+
+class reportSendMessagesForm(forms.ModelForm):
+  
+    class Meta:
+        model = AssistantMessages
+        fields = ('message','reportMessageFile')
+
+        widgets = {
+            'deadLine': DateInput(),
+        }
+
+
+
+
+
+
+class directorReportSendMessagesForm(forms.ModelForm):
+  
+    class Meta:
+        model = DirectorReportMessages
+        fields = ('message','reportMessageFile')
+
+        widgets = {
+            'deadLine': DateInput(),
+        }

@@ -101,3 +101,38 @@ class teamProjectDetailForm(forms.ModelForm):
 
 
 
+
+class reportDetailForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(reportDetailForm, self).__init__(*args, **kwargs)
+        self.fields['reportTitle'].widget.attrs['readonly'] = True 
+        self.fields['reportsDescription'].widget.attrs['readonly'] = True 
+        self.fields['deadLine'].widget.attrs['readonly'] = True 
+        self.fields['dateAdded'].widget.attrs['readonly'] = True 
+        self.fields['is_late'].widget.attrs['readonly'] = True 
+
+    dateAdded = forms.CharField(
+    widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    class Meta:
+        model = Reports
+        # fields = '__all__'
+        exclude = ['created_by','is_seen','directorUnique','directorApproved',
+        'directorApprovedDate','assistantApproved',
+        'assistantApprovedDate','leaderApprovedDate','reportFile','is_active']
+
+        widgets = {
+            'deadLine': DateInput(),
+        }
+
+
+
+
+
+# class teamSendMessagesForm(forms.ModelForm):  
+#     class Meta:
+#         model = TeamProjectMessages
+#         fields = ('message','reportMessageFile')
+
+#         widgets = {
+#             'deadLine': DateInput(),
+#         }

@@ -45,10 +45,10 @@ class projectMessages(admin.ModelAdmin):
 
 class reports(admin.ModelAdmin):
     list_display = ('reportTitle','deadLine','created_by',
-        'is_seen','dateAdded','assistantDirector')
+        'is_seen','dateAdded')
 
     search_fields = ('reportTitle','deadLine','created_by',
-        'is_seen','dateAdded','assistantDirector')
+        'is_seen','dateAdded')
 
     readonly_fields = ['dateAdded']
 

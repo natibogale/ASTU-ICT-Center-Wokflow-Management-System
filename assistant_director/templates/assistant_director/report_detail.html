@@ -1,0 +1,124 @@
+{% extends "base/index.html" %} 
+{% load static %}
+{% load crispy_forms_filters %} 
+
+{% block content %}
+
+<div class="page-inner">
+  <div class="page-header"></div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            View your Report request here!
+          </div>
+        </div>
+        <div class="card-body">
+        
+
+<div class="container rounded bg-white ">
+    <div class="row">
+        <!-- <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="{{ user.profilePicture.url }}"><span class="font-weight-bold">{{ user.firstName }}</span><span class="text-black-50">{{ user.email }}</span><span> </span></div>
+        </div> -->
+        <div class="col-md-9">
+          <form  novalidate method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input
+            type="submit"
+            class="mr-auto ml-4  btn btn-success"
+            name="submit"
+            value="Update Report"
+            />
+          </form>
+        </div>
+
+        <div class="col-md-2">
+          {% if obj.reportFile %}
+          <h5>Report file</h5>
+          <div class="table-responsive">
+            <a href="/media/{{ obj.reportFile }}"><img class="" style="width: 50px;" src="{% static 'file.png' %}" alt="Attached File Icon">
+            </a>  
+          </div>
+          {% endif %}
+          <br><br>
+          <h4>Teams</h4>
+          <br>
+          {% for team in teams %}
+          <a href="{% url 'ad_report_messages' obj.id team.id %}">{{ team.teamName }}</a>
+          <br>
+          <br>
+          {% endfor %}
+  
+      </div>
+  
+
+        <!-- <div class="col-md-8 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Project Title: {{ list.projectTitle }}</h4>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control" placeholder="first name" value="{{ user.firstName }}"></div>
+                    <div class="col-md-6"><label class="labels">Surname</label><input type="text" class="form-control" value="{{ user.lastName }}" placeholder="surname"></div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12"><label class="labels">Email</label><input type="email" class="form-control" placeholder="Enter Valid a Email" value="{{ user.email }}"></div>
+                    <div class="col-md-12"><label class="labels">Phone Number</label><input type="text" class="form-control" placeholder="Input a valid phone number" value="{{ user.phone }}"></div>
+                    <div class="col-md-12"><label class="labels">Gender</label><input type="text" class="form-control" placeholder="Input Male/Female" value="{{ user.gender }}"></div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12"><label class="labels">Role</label><input type="text" class="form-control" placeholder="Your role in this organization" value="{{ user.role }}"></div>
+                    <div class="col-md-12"><label class="labels">Team</label><input type="text" class="form-control" value="{{ user.team }}" placeholder="Which team are you a part of"></div>
+                </div>
+                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Save Profile</button></div>
+            </div>
+        </div> -->
+        <!-- <div class="col-md-4">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center experience"><span>Edit Experience</span><span class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Experience</span></div><br>
+                <div class="col-md-12"><label class="labels">Experience in Designing</label><input type="text" class="form-control" placeholder="experience" value=""></div> <br>
+                <div class="col-md-12"><label class="labels">Additional Details</label><input type="text" class="form-control" placeholder="additional details" value=""></div>
+            </div>
+        </div> -->
+    </div>
+</div>
+</div>
+</div>
+         </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <form  novalidate method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input
+          type="submit"
+          class="mr-auto ml-4  btn btn-danger"
+          name="submit"
+          value="Delete Report"
+          />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

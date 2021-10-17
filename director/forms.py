@@ -97,3 +97,70 @@ class profileDetail(forms.ModelForm):
         widgets = {
             'deadLine': DateInput(),
         }
+
+
+
+
+
+
+
+
+class requestReportsForm(forms.ModelForm):
+
+    class Meta:
+        model = Reports
+        # fields = '__all__'
+        exclude = ['dateAdded','is_seen','created_by','is_active',
+        'currentlyOn','expertUnique','teamUnique',
+        'directorApproved','leaderApproved','directorApprovedDate', 
+        'directorUnique','assistantApprovedDate','assistantApproved',
+        'leaderApprovedDate', 'is_late']
+
+        widgets = {
+            'deadLine': DateInput(),
+        }
+
+
+
+class reportSendMessagesForm(forms.ModelForm):
+  
+    class Meta:
+        model = DirectorReportMessages
+        fields = ('message','reportMessageFile')
+
+        widgets = {
+            'deadLine': DateInput(),
+        }
+
+
+
+class directorReportApproveForm(forms.ModelForm):  
+    CHOICES=[('True','Yes'),
+    ('False','No')]
+
+    # Leader_Approved = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect)
+  
+    class Meta:
+        model = Reports
+        fields = ('directorApproved',)
+
+
+
+
+
+class reportDetailForm(forms.ModelForm):
+
+
+    dateAdded = forms.CharField(
+    widget=forms.TextInput(attrs={'readonly':'readonly'}))
+
+    class Meta:
+        model = Reports
+        # fields = '__all__'
+        exclude = ['created_by','is_seen','directorUnique',
+        'leaderApproved', 'assistantApproved','directorApprovedDate',
+        'assistantApprovedDate','leaderApprovedDate']
+
+        widgets = {
+            'deadLine': DateInput(),
+        }

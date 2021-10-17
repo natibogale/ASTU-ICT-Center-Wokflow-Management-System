@@ -1,0 +1,132 @@
+{% extends "base/index.html" %} 
+{% load static %}
+{% load crispy_forms_filters %} 
+
+
+
+
+
+  
+{% block content %}
+
+<div class="page-inner scroll-yes " id="message">
+  <div class="page-header ">
+
+  </div>
+  {% for list in lists %}
+  {% if list.messageSender.id != user.id %}
+  <div class="row col-md-12">
+
+    <div class="col-md-6">
+      <div class="col grid-margin stretch-card">
+        <div class="card">
+          <h6 class="pl-2 pt-2">{{list.messageSender.firstName}} {{list.messageSender.lastName}}</h6>
+
+          <div class="card-body">
+            <p>{{ list.message }}</p>
+            {% if list.reportMessageFile %}
+            <div class="table-responsive">
+              <a href="/media/{{ list.reportMessageFile }}"><img class="" style="width: 50px;" src="{% static 'file.png' %}" alt="Attached File Icon">
+              </a>  
+            </div>
+            {% endif %}
+            <p style="float: right;" class="mb-0 mr-0">{{ list.sentDate }}</p>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        
+    
+
+
+       <div class="col-md-6">
+  
+        </div>
+        
+    </div>
+
+
+
+
+
+
+
+    {% else %}
+
+
+    <div class="row col-md-12">
+
+        
+        <div class="col-md-6">
+        
+        </div>
+    
+
+
+       <div class="col-md-6">
+      <div class="col grid-margin stretch-card">
+        <div class="card">
+          <h6 class="pl-2 pt-2">{{list.messageSender.firstName}} {{list.messageSender.lastName}}</h6>
+
+          <div class="card-body">
+            <p>{{ list.message }}</p>
+            {% if list.reportMessageFile %}
+            <div class="table-responsive">
+              <a href="/media/{{ list.reportMessageFile }}"><img class="" style="width: 50px;" src="{% static 'file.png' %}" alt="Attached File Icon">
+              </a>  
+            </div>
+            {% endif %}
+            <p style="float: right;" class="mb-0 mr-0">{{ list.sentDate }}</p>
+
+          </div>
+        </div>
+      </div>
+        </div>
+
+    </div>
+{% endif %}
+
+
+    {% endfor %}
+
+
+</div>
+<div class="row">
+<div class="col-md-6">
+  <form method="POST" enctype="multipart/form-data" novalidate style="margin-bottom: 80px;">
+    {% csrf_token %}
+    {{ form|crispy }}
+    
+    <input
+    type="submit"
+    class="mr-auto btn btn-success"
+    name="submit"
+    value="Send Message"
+    />
+    </form>
+</div>
+<!-- {% if approve.assistantApproved %}
+
+
+{% else %}
+<div class="col-md-6">
+  <form method="POST" enctype="multipart/form-data" novalidate class="ml-5" style="display: flex; align-items:center;">
+    {% csrf_token %}
+    {{ form2|crispy }}
+    
+    <input
+    type="submit"
+    class="mr-auto ml-4  btn btn-success"
+    name="submit"
+    value="Approve Report"
+    />
+    </form>
+</div>
+{% endif %} -->
+
+</div>
+
+
+
+{% endblock content %}

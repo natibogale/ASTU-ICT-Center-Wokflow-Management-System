@@ -1,0 +1,85 @@
+{% extends "base/index.html" %} 
+{% load static %}
+{% load crispy_forms_filters %} 
+
+
+
+
+
+  
+{% block content %}
+
+<div class="page-inner ">
+  <div class="page-header col-12">
+
+  </div>
+  <div class="row">
+    <div class="col">
+
+
+    <div class="col">
+      <div class="col grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Report's Archive</h4>
+            </p>
+            <div class="table-responsive">
+              <table class="table table-hover" id="example">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Deadline</th>
+                    <th>Activity</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for list in lists %}
+                  <tr>
+                    <td>  <a href="{% url 'ad_report_detail' list.id %}">{{ list.reportTitle }}</a> </td>
+                    {% if list.deadLine > date %}
+                    <td>{{ list.deadLine }}</td>
+                    {% else %}
+                    <td>
+                      <label class="badge badge-danger">Late</label>
+                    </td>
+                    {% endif %}                
+             
+                    {% if list.is_active %}
+                      <td>
+                    <label class="badge badge-primary ">Active</label>
+                  </td>
+                    {% else %}
+                    <td>
+                    <label class="badge badge-secondary">Completed</label>
+                  </td>
+
+
+                      {% endif %}
+
+                  </tr>
+                  {% endfor %}
+               
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+  </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+{% endblock content %}

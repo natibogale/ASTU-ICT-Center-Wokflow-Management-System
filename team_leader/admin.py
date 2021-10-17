@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from team_leader.models import (ExpertProjectMessages, ExpertReportMessages)
+from team_leader.models import (ExpertProjectMessages)
 
 # Register your models here.
 
@@ -27,26 +27,26 @@ class projectMessages(admin.ModelAdmin):
 
 
 
-class reportMessages(admin.ModelAdmin):
-    list_display = ('id','reportId','messageSender','messageTo',
-        'message','sentDate','is_seen')
+# class reportMessages(admin.ModelAdmin):
+#     list_display = ('id','reportId','messageSender','messageTo',
+#         'message','sentDate','is_seen')
 
-    search_fields = ('id','reportId','messageSender','messageTo',
-        'message','sentDate','is_seen')
+#     search_fields = ('id','reportId','messageSender','messageTo',
+#         'message','sentDate','is_seen')
 
-    readonly_fields = ('sentDate',)
+#     readonly_fields = ('sentDate',)
 
-    list_display_links=[
-        'reportId',
-        'id',
-    ]
+#     list_display_links=[
+#         'reportId',
+#         'id',
+#     ]
 
-    filter_horizontal = ()
-    list_filter = ["sentDate"]
-    fieldsets = ()
+#     filter_horizontal = ()
+#     list_filter = ["sentDate"]
+#     fieldsets = ()
 
 
-admin.site.register(ExpertReportMessages,reportMessages)
+# admin.site.register(ExpertReportMessages,reportMessages)
 
 
 admin.site.register(ExpertProjectMessages,projectMessages)

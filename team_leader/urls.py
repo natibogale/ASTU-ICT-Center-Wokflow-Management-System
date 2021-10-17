@@ -12,6 +12,10 @@ urlpatterns = [
     path('project-detail/<id>', projectDetail, name="tl_project_detail"),
 
 
+    path('manage-reports/', manageReports, name="tl_manage_reports"),
+    path('report-detail/<id>', reportDetail, name="tl_report_detail"),
+    path('report-messages/<id>', reportMessagesView, name="tl_report_messages"),
+
 
 
 

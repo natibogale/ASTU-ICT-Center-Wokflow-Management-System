@@ -33,12 +33,16 @@
         </div>
 
         <div class="col-md-2">
-
+          <div class="col-md-2">
+            {% if obj.projectFile %}
             <h5>Project file</h5>
             <div class="table-responsive">
               <a href="/media/{{ obj.projectFile }}"><img class="" style="width: 50px;" src="{% static 'file.png' %}" alt="Attached File Icon">
               </a>  
             </div>
+            {% endif %}
+    
+        </div>
     
         </div>
   
