@@ -4709,10 +4709,10 @@ input[type="button"].btn-block {
     color: #16181b;
     text-decoration: none;
     background-color: #f8f9fa; }
-  .dropdown-item.active, .dropdown-item:active {
+  /* .dropdown-item.active, .dropdown-item:active {
     color: #fff;
     text-decoration: none;
-    background-color: #007bff; }
+    background-color: #007bff; } */
   .dropdown-item.disabled, .dropdown-item:disabled {
     color: #6c757d;
     pointer-events: none;
@@ -14671,19 +14671,20 @@ dl {
           border-top-left-radius: 50px;
           border-bottom-left-radius: 50px; }
       .sidebar .nav .nav-item:not(:nth-child(2)).active {
-        background: #1a55e3; }
+        background: #ffffff;
+       }
         .sidebar .nav .nav-item:not(:nth-child(2)).active > .nav-link .menu-title {
-          color: #ffffff;
+          color: #6a6b83;
           font-family: "Open Sans", sans-serif;
           font-weight: 600; }
           .sidebar-icon-only .sidebar .nav .nav-item:not(:nth-child(2)).active > .nav-link .menu-title {
             color: #000; }
         .sidebar .nav .nav-item:not(:nth-child(2)).active > .nav-link i {
-          color: #ffffff; }
+          color: #6a6b83; }
         .sidebar .nav .nav-item:not(:nth-child(2)).active .sub-menu .nav-link {
           color: #dfe2e8; }
           .sidebar .nav .nav-item:not(:nth-child(2)).active .sub-menu .nav-link.active {
-            color: #ffffff; }
+            color: #e70c0c; }
             .sidebar-icon-only .sidebar .nav .nav-item:not(:nth-child(2)).active .sub-menu .nav-link.active {
               color: #000; }
       .sidebar .nav .nav-item.nav-profile .nav-link {
@@ -14729,9 +14730,11 @@ dl {
           height: auto;
           border-top: 0; }
           .sidebar .nav.sub-menu .nav-item .nav-link.active {
-            color: #ffffff;
+            /* color: #ffffff;
             font-weight: 600;
-            background: transparent; }
+            background: transparent; */
+          
+          }
           .sidebar .nav.sub-menu .nav-item .nav-link:hover {
             color: #15191e; }
         .sidebar .nav.sub-menu .nav-item:hover {
